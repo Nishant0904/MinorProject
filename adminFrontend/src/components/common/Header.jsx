@@ -1,38 +1,39 @@
 import React from "react";
-import { Heart } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Header = ({ user }) => {
+const Header = ({ admin }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPage =
-    location.pathname === "/" ? "home" : location.pathname.slice(1);
+    location.pathname === "/" ? "dashboard" : location.pathname.slice(1);
+
+  const navItems = [
+    { label: "dashboard", path: "/" },
+    { label: "donor requests", path: "/donor-form" },
+    { label: "registration", path: "/registration" },
+    { label: "banking", path: "/banking-options" },
+  ];
 
   return (
-    <header className="bg-white shadow-lg">
+    <header className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div
             className="flex items-center cursor-pointer"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/admin-dashboard")}
           >
-            <Heart className="h-8 w-8 text-red-500 mr-2" />
+            <ShieldCheck className="h-8 w-8 text-blue-600 mr-2" />
             <span className="text-2xl font-bold text-gray-900">
-              StemCell Bank
+              Admin Panel
             </span>
           </div>
           <nav className="hidden md:flex space-x-8">
-            {[
-              { label: "home", path: "/" },
-              { label: "my registration", path: "/my-registration" },
-              { label: "about", path: "/about" },
-              { label: "services", path: "/services" },
-              { label: "contact", path: "/contact" },
-            ].map(({ label, path }) => (
+            {navItems.map(({ label, path }) => (
               <button
                 key={label}
                 onClick={() => navigate(path)}
-                className={`capitalize pb-2 transition-colors cursor-pointer ${
+                className={`capitalize pb-2 transition-colors font-medium ${
                   currentPage === label
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-700 hover:text-blue-600"
@@ -42,18 +43,8 @@ const Header = ({ user }) => {
               </button>
             ))}
           </nav>
-
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <span className="text-gray-700">Welcome, {user.name}</span>
-            ) : (
-              <button
-                onClick={() => navigate("/registration")}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Get Started
-              </button>
-            )}
+          <div className="text-gray-700">
+            {admin ? `Welcome, ${admin.name}` : "Admin"}
           </div>
         </div>
       </div>
